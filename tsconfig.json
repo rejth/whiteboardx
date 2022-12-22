@@ -1,0 +1,44 @@
+// Visit https://aka.ms/tsconfig.json to read more about this file
+// Best practice: https://www.sitepoint.com/react-with-typescript-best-practices/
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "paths": {
+      "app/*": ["./src/app/*"],
+      "pages/*": ["./src/pages/*"],
+      "widgets/*": ["src/components/*"],
+      "features/*": ["./src/features/*"],
+      "entities/*": ["./src/entities/*"],
+      "shared/*": ["./src/shared/*"]
+    },
+    "allowJs": true, // Allow JavaScript files to be compiled
+    "skipLibCheck": true, // Skip type checking of all declaration files
+    "esModuleInterop": true, // Disables namespace imports (import * as fs from "fs") and enables CJS/AMD/UMD style imports (import fs from "fs")
+    "allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export
+    "isolatedModules": true,
+    "strict": true, // Enable all strict type checking options
+    "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file.
+    "target": "es6", // Specify ECMAScript target version
+    "module": "esnext", // Specify module code generation
+    "moduleResolution": "node", // Resolve modules using Node.js style
+    "resolveJsonModule": true, // Include modules imported with .json extension
+    "removeComments": true, // Disable emitting comments
+    "noEmit": true, // Do not emit output (meaning do not compile code, only perform type checking)
+    "jsx": "react", // Support JSX in .tsx files
+    "sourceMap": true, // Generate corrresponding .map file
+    "declaration": true, // Generate corresponding .d.ts file
+    "noUnusedLocals": true, // Report errors on unused locals
+    "noUnusedParameters": true, // Report errors on unused parameters
+    "experimentalDecorators": true, // Enables experimental support for ES decorators
+    "noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statement
+    "lib": ["es2019", "dom"]
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "CommonJS"
+    }
+  },
+  "include": ["./config/jest/setupTests.ts", "./src/**/*.ts", "./src/**/*.tsx"],
+  "exclude": ["./node_modules", "./node_modules/**/*", "build", "dist"]
+}

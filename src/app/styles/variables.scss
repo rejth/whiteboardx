@@ -1,0 +1,165 @@
+:root {
+  --font-size-xxs: 11px;
+  --font-size-12: 12px;
+  --font-size-xs: 13px;
+  --font-size-s: 14px;
+  --font-size-m: 15px;
+  --font-size-16: 16px;
+  --font-size-l: 18px;
+  --font-size-xl: 20px;
+  --font-size-xxl: 24px;
+  --font-size-28: 28px;
+  --font-size-34: 34px;
+  --font-size-40: 40px;
+  --font-size-48: 48px;
+  --font-size-56: 56px;
+
+  --font-weight-s: 100;
+  --font-weight-m: 400;
+  --font-weight-l: 500;
+  --font-weight-xl: 600;
+  --font-weight-xxl: 700;
+
+  --font-weight-bold: 600;
+  --font-weight-regular: 400;
+
+  --font-size-large: 26px;
+  --font-size-big: 18px;
+  --font-size-medium: 14px;
+  --font-size-small: 12px;
+  --font-size-tiny: 8px;
+
+  --line-height-s: 16px;
+  --line-height-m: 20px;
+  --line-height-l: 24px;
+  --line-height-xl: 28px;
+  --line-height-xxl: 36px;
+
+  --space-xxs: 4px;
+  --space-xs: 6px;
+  --space-s: 8px;
+  --space-sm: 10px;
+  --space-m: 12px;
+  --space-15: 15px;
+  --space-l: 16px;
+  --space-18: 18px;
+  --space-20: 20px;
+  --space-xl: 24px;
+  --space-25: 25px;
+  --space-30: 30px;
+  --space-xxl: 32px;
+  --space-34: 34px;
+  --space-36: 36px;
+  --space-40: 40px;
+  --space-56: 56px;
+  --space-72: 72px;
+
+  --border-radius-s: 4px;
+  --border-radius-m: 8px;
+  --border-radius-l: 12px;
+
+  --color-main-white: #FFFFFF;
+  --color-main-light: #FBFBFB;
+  --color-main-medium: #414447;
+  --color-main-dark: #27292C;
+  --color-accent-main-active: #6AC5AB;
+  --color-accent-main: #ACA8FF;
+  --color-accent-light: #FAFAFA;
+  --color-accent-medium: #D2D6DB;
+  --color-accent-second: #9DE5FF;
+  --color-accent-second-active: #D5FDFF;
+  --color-main-separators: var(--color-main-medium);
+  --color-event-card-bg: var(--color-accent-main-active);
+  --color-social-button-background: #4285F4;
+  --color-facebook-button: #1877F2;
+  --color-vk-button: #5181B8;
+  --color-input-background: var(--color-main-white);
+
+  --color-blue-100: #001144;
+  --color-blue-95: #22242A;
+  --color-blue-90: #001D6D;
+  --color-blue-85: #083F91;
+  --color-blue-80: #022D9A;
+  --color-blue-75: #0B43DA;
+  --color-blue-70: #0142D3;
+  --color-blue-65: #0D69F2;
+  --color-blue-60: #0062FF;
+  --color-blue-55: #2375E1;
+  --color-blue-50: #307FFF;
+  --color-blue-40: #6FA3FF;
+  --color-blue-35: #B1B5BB;
+  --color-blue-30: #A7C7FF;
+  --color-blue-20: #D6E4FE;
+  --color-blue-10: #EDF5FF;
+  --color-blue-05: #F3F4F6;
+
+  --color-grey-black: #000000;
+  --color-grey-90: #242424;
+  --color-grey-80: #383838;
+  --color-grey-70: #525252;
+  --color-grey-60: #6C6C6C;
+  --color-grey-55: #7B7E86;
+  --color-grey-50: #7E7E7E;
+  --color-grey-40: #9E9E9E;
+  --color-grey-35: #9A9EA5;
+  --color-grey-30: #B4B4B4;
+  --color-grey-25: rgba(255, 255, 255, 0.64);
+  --color-grey-23: #D7DEE9;
+  --color-grey-20: #D8D8D8;
+  --color-grey-15: #E5E7EB;
+  --color-grey-10: #E7E7E7;
+  --color-grey-07: #F3F4F6;
+  --color-grey-05: #F4F4F4;
+  --color-grey-white: #FFFFFF;
+
+  --color-green-100: #00230C;
+  --color-green-90: #003111;
+  --color-green-80: #04451A;
+  --color-green-70: #096227;
+  --color-green-60: #128238;
+  --color-green-50: #1BA049;
+  --color-green-40: #32C665;
+  --color-green-30: #73E49A;
+  --color-green-20: #B6F1C9;
+  --color-green-10: #EAFCF1;
+
+  --color-red-100: #320000;
+  --color-red-90: #520606;
+  --color-red-80: #780A0A;
+  --color-red-70: #A71212;
+  --color-red-60: #D92020;
+  --color-red-50: #F64E4E;
+  --color-red-40: #FF7C7C;
+  --color-red-30: #FFA7A7;
+  --color-red-20: #FFD4D4;
+  --color-red-10: #FFEFEF;
+
+  --color-orange-100: #3D1100;
+  --color-orange-90: #591C04;
+  --color-orange-80: #7A2503;
+  --color-orange-70: #A63208;
+  --color-orange-60: #D63F09;
+  --color-orange-50: #FF5C22;
+  --color-orange-40: #FF8D64;
+  --color-orange-30: #FFB799;
+  --color-orange-20: #FFD7C3;
+  --color-orange-10: #FFF1E5;
+  --color-orange-05: #FFF7F0;
+
+  --color-purple-100: #1C0F30;
+  --color-purple-90: #31135E;
+  --color-purple-80: #491D8B;
+  --color-purple-70: #6929C4;
+  --color-purple-60: #8A3FFC;
+  --color-purple-50: #A56EFF;
+  --color-purple-40: #BE95FF;
+  --color-purple-30: #D4BBFF;
+  --color-purple-20: #E8DAFF;
+  --color-purple-10: #F6F2FF;
+
+  --color-yellow-50: #FFC400;
+  --color-yellow-40: #FDD14C;
+  --color-yellow-30: #FEE189;
+  --color-yellow-20: #FEEEB8;
+  --color-yellow-10: #FEF5D7;
+}

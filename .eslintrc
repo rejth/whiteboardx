@@ -1,0 +1,88 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "plugins": [
+    "react", // @eslint-plugin-react
+    "react-hooks", // @eslint-plugin-react-hooks
+    "import", // @eslint-plugin-import
+    "jsx-a11y", // @eslint-plugin-jsx-a11y
+    "@typescript-eslint", // @typescript-eslint/eslint-plugin
+    "prettier", // @eslint-plugin-prettier
+    "jest", // @eslint-plugin-jest
+    "jest-dom" // @eslint-plugin-jest-dom
+  ], // Turn on the plugins and peer plugins
+  "extends": [
+    "airbnb", // Use the recommended rules from @eslint-config-airbnb
+    "airbnb-typescript", // Extends prevouos rules by rules from @eslint-config-airbnb-typescript
+    "plugin:react/recommended", // Extends prevouos rules by rules from @eslint-plugin-react
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended", // Extends prevouos rules by rules from @typescript-eslint/eslint-plugin
+    "prettier", // Extends prevouos rules by rules from @eslint-plugin-prettier
+    "plugin:jest/recommended", // Extends prevouos rules by recommended rules from @eslint-plugin-jest
+    "plugin:jest-dom/recommended" // Extends prevouos rules by recommended rules from @eslint-plugin-jest-dom
+  ],
+  "parser": "@typescript-eslint/parser", // Specifies the ESLint parser
+  "parserOptions": {
+    "project": "./tsconfig.json", // Source file for @typescript-eslint/parser
+    "sourceType": "module", // Allows for the use of imports
+    "createDefaultProgram": true,
+    "ecmaVersion": "latest", // Allows for the parsing of modern ECMAScript features
+    "ecmaFeatures": {
+      "jsx": true, // Allows for the parsing of JSX
+      "modules": true
+    }
+  },
+  "rules": {
+    "prettier/prettier": "error",
+    "global-require": "off",
+    "no-param-reassign": "off",
+    "no-unused-vars": "off",
+    "no-underscore-dangle": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "react/jsx-no-useless-fragment": "off",
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true,
+        "optionalDependencies": false,
+        "peerDependencies": false
+      }
+    ],
+    "linebreak-style": ["error", "unix"],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-pascal-case": ["error"],
+    "react/jsx-sort-props": [
+      "error",
+      {
+        "noSortAlphabetically": true,
+        "ignoreCase": true,
+        "callbacksLast": true,
+        "shorthandLast": false,
+        "reservedFirst": ["key"]
+      }
+    ]
+  },
+  "globals": {
+    "__IS_DEV__": true,
+    "__API__": true,
+    "__PROJECT__": true
+  },
+  "ignorePatterns": ["./node_modules/**", "./src/**/*.cjs"],
+  "settings": {
+    "react": {
+      "version": "detect" // Tells eslint-plugin-react to automatically detect the version of React to use
+    }
+  }
+}

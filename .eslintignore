@@ -1,0 +1,14 @@
+node_modules
+build
+coverage/
+dist/
+public/
+
+cypress/support/
+
+jest.config.mjs
+wdio.conf.cjs
+cypress.config.js
+
+*.scss
+*.svg
