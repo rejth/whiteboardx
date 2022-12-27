@@ -1,14 +1,17 @@
-type EventHandler = (...args: unknown[]) => void;
-type Events = Map<Event, Set<EventHandler>>;
-type Event = keyof typeof EventEnum;
+type EventHandler = (...args: any[]) => void;
+type EventsMap = Map<Event, Set<EventHandler>>;
+export type Event = keyof typeof Events;
 
-enum EventEnum {
+export enum Events {
   START = 'START',
   END = 'END',
   MOVE = 'MOVE',
   RESIZE = 'RESIZE',
   UNDO = 'UNDO',
   REDO = 'REDO',
+  CHANGE_TOOL = 'CHANGE_TOOL',
+  STORE = 'STORE',
+  TOOL_STORE = 'TOOL_STORE',
 }
 
 interface IEventBus {
@@ -18,8 +21,8 @@ interface IEventBus {
   getHandlers(event: string): Set<EventHandler>;
 }
 
-export class EventBus implements IEventBus {
-  #events: Events = new Map<Event, Set<EventHandler>>();
+class EventBus implements IEventBus {
+  #events: EventsMap = new Map<Event, Set<EventHandler>>();
 
   on(event: Event, handler: EventHandler): void {
     this.getHandlers(event).add(handler);
@@ -57,3 +60,5 @@ export class EventBus implements IEventBus {
     return callbacks;
   }
 }
+
+export const eventBus = new EventBus();
