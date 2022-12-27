@@ -21,7 +21,9 @@ export class BoardTools extends React.Component<any, any> {
         { id: 5, label: 'fa-pencil', type: 'pen' },
       ],
     };
+  }
 
+  componentDidMount() {
     toolStore.subscribe(() => {
       const { tools } = this.state;
 

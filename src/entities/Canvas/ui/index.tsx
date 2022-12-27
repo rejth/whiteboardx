@@ -14,14 +14,14 @@ export class Canvas extends React.Component<any, ICanvasState> {
     this.state = {
       data: [],
     };
-
-    store.subscribe(() => {
-      this.setState({ data: store.shapes });
-    });
   }
 
   componentDidMount() {
     this.setState({ data: store.shapes });
+
+    store.subscribe(() => {
+      this.setState({ data: store.shapes });
+    });
   }
 
   mouseDown() {
