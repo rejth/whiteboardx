@@ -1,4 +1,4 @@
-## 💻 SchemaX
+## 💻 WhiteboardX
 
 This application is ...
 
@@ -43,8 +43,8 @@ Prerequisites:
 To set up the app execute the following commands.
 
 ```bash
-git clone ...
-cd ...
+git clone https://github.com/rejth/whiteboardx.git
+cd whiteboardx
 npm install
 ```
 
@@ -52,7 +52,7 @@ npm install
 
 In the project directory, you can run:
 
-### `npm run start`
+### `npm run dev`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

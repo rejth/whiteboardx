@@ -1,10 +1,5 @@
 {
-  "plugins": [
-    "stylelint-scss",
-    "stylelint-order",
-    "stylelint-group-selectors",
-    "stylelint-force-selector-name-prefix"
-  ],
+  "plugins": ["stylelint-scss", "stylelint-order", "stylelint-group-selectors"],
   "extends": ["stylelint-config-recommended", "stylelint-config-prettier"],
   "rules": {
     "selector-id-pattern": [
@@ -67,10 +62,6 @@
     "color-hex-length": "long",
     "font-family-name-quotes": "always-unless-keyword",
     "plugin/stylelint-group-selectors": true,
-    "plugin/stylelint-force-selector-name-prefix": {
-      "afterPath": "pages",
-      "separator": "kebab-case"
-    },
     "order/order": [
       [
         "custom-properties",

@@ -1,24 +1,34 @@
 import React from 'react';
 
 import { classNames } from 'shared/lib';
-import { eventBus, toolStore, Events } from 'entities/Canvas/model';
+import { eventBus, Events, toolStore, Tools, Tool } from 'entities/Canvas/model';
 
 import NoteIcon from './assets/note.svg';
 import TextIcon from './assets/text.svg';
 import TrashIcon from './assets/trash.svg';
+
 import cls from './BoardTools.module.scss';
 
-export class BoardTools extends React.Component<any, any> {
-  constructor(props: any) {
+interface ITool {
+  id: number;
+  label: string;
+  type: Tool;
+  isSelected?: boolean;
+}
+
+interface IBoardToolsState {
+  tools: ITool[];
+}
+
+export class BoardTools extends React.Component<unknown, IBoardToolsState> {
+  constructor(props: unknown) {
     super(props);
 
     this.state = {
       tools: [
-        { id: 1, label: 'fa-mouse-pointer', type: 'cursor' },
-        { id: 2, label: 'fa-minus', type: 'line', selected: true },
-        { id: 3, label: 'fa-square-o', type: 'rect' },
-        { id: 4, label: 'fa-circle-thin', type: 'ellipse' },
-        { id: 5, label: 'fa-pencil', type: 'pen' },
+        { id: 1, label: 'Note', type: Tools.NOTE, isSelected: true },
+        { id: 2, label: 'Text', type: Tools.TEXT },
+        { id: 3, label: 'Delete', type: Tools.DELETE },
       ],
     };
   }
@@ -27,17 +37,17 @@ export class BoardTools extends React.Component<any, any> {
     toolStore.subscribe(() => {
       const { tools } = this.state;
 
-      const updatedTools = tools.map((tool: any) => ({
+      const updatedTools = tools.map((tool: ITool) => ({
         ...tool,
-        selected: toolStore.tool === tool.id,
+        isSelected: toolStore.tool === tool.type,
       }));
 
       this.setState({ tools: updatedTools });
     });
   }
 
-  handleClick() {
-    eventBus.emit(Events.CHANGE_TOOL, 'NOTE');
+  handleClick(type: Tool) {
+    eventBus.emit(Events.CHANGE_TOOL, type);
     return this;
   }
 
@@ -52,7 +62,7 @@ export class BoardTools extends React.Component<any, any> {
               title="Drag to add new text note"
               draggable="true"
             >
-              <NoteIcon onClick={this.handleClick} />
+              <NoteIcon onClick={() => this.handleClick(Tools.NOTE)} />
             </span>
             <span className={cls.text}>Note</span>
           </span>
@@ -65,7 +75,7 @@ export class BoardTools extends React.Component<any, any> {
               title="Drag to add new text area"
               draggable="true"
             >
-              <TextIcon />
+              <TextIcon onClick={() => this.handleClick(Tools.TEXT)} />
             </span>
             <span className={cls.text}>Text</span>
           </span>
@@ -73,7 +83,7 @@ export class BoardTools extends React.Component<any, any> {
         <li className={cls.tools_list_item}>
           <span className={cls.tool} title="Delete selected item(s)">
             <span className={classNames(cls.icon, { [cls.disabled]: true })}>
-              <TrashIcon />
+              <TrashIcon onClick={() => this.handleClick(Tools.DELETE)} />
             </span>
             <span className={cls.text}>Delete</span>
           </span>

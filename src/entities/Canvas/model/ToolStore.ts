@@ -1,7 +1,7 @@
 import { eventBus, Event, Events } from './EventBus';
 
-export type Tool = keyof typeof Tools;
 type ChangeHandler = (...args: unknown[]) => void;
+export type Tool = keyof typeof Tools;
 
 export enum Tools {
   NOTE = 'NOTE',
@@ -15,13 +15,13 @@ export enum Tools {
 class ToolStore {
   storeKey: Event;
 
-  tool: Tool | null;
+  tool: Tool;
 
   constructor() {
     this.storeKey = 'TOOL_STORE';
     eventBus.on(Events.CHANGE_TOOL, this.changeTool.bind(this));
 
-    this.tool = null;
+    this.tool = Tools.NOTE;
   }
 
   subscribe(handler: ChangeHandler): void {
