@@ -57,20 +57,24 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
     const selectedTool = shapes[0]?.type;
 
     return (
-      <div className={cls.canvas_wrapper}>
-        <div
-          draggable
-          role="button"
-          tabIndex={0}
-          className={cls.canvas}
-          onKeyDown={this.mouseDown}
-          onClick={this.mouseDown}
-          onDragOver={this.handleDragOver}
-          onDragStart={this.handleDragStart}
-          onDrop={this.handleOnDrop}
-          onDragEnter={this.handleDragEnter}
-        >
-          {selectedTool}
+      <div className={cls.content_wrapper}>
+        <div className={cls.scroll_wrapper}>
+          <div className={cls.canvas_wrapper}>
+            <div
+              draggable
+              role="button"
+              tabIndex={0}
+              className={cls.canvas}
+              onKeyDown={this.mouseDown}
+              onClick={this.mouseDown}
+              onDragOver={this.handleDragOver}
+              onDragStart={this.handleDragStart}
+              onDrop={this.handleOnDrop}
+              onDragEnter={this.handleDragEnter}
+            >
+              {selectedTool}
+            </div>
+          </div>
         </div>
       </div>
     );

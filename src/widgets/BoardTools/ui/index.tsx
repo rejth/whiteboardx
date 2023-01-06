@@ -53,7 +53,7 @@ export class BoardTools extends React.Component<unknown, IBoardToolsState> {
 
   render() {
     return (
-      <ul className={cls.BoardTools}>
+      <ul className={cls.BoardTools} draggable="true">
         <li className={cls.tools_list_item}>
           <span className={cls.tool}>
             <span
