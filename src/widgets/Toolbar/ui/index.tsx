@@ -47,7 +47,6 @@ export class Toolbar extends React.Component<unknown, IToolbarState> {
   }
 
   handleClick(type: Tool) {
-    console.log('🚀 ~ file: index.tsx:50 ~ Toolbar ~ handleClick ~ type', type);
     eventBus.emit(Events.CHANGE_TOOL, type);
     return this;
   }
