@@ -7,4 +7,3 @@ export { Events } from './EventBus';
 export type { Event } from './EventBus';
 
 export { store } from './Store';
-export type { IShape } from './Store';

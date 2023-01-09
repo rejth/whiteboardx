@@ -1,20 +1,34 @@
 .BoardPage {
-
   display: flex;
   flex-direction: column;
   width: 100%;
   box-sizing: border-box;
-  user-select: none;
 }
 
-.Tools {
+.content_wrapper {
+  position: relative;
+  flex-grow: 1;
+  height: 80%;
+  margin-top: 2.4rem;
+}
+
+.scroll_wrapper {
+  overflow: auto;
+  height: 100%;
+  background-color: #F4F4F6;
+}
+
+.tools_wrapper {
   position: absolute;
   top: 0;
   z-index: 400000010;
-
   width: 100%;
   height: 100%;
   padding: 0;
   margin: 0;
   pointer-events: none;
+}
+
+.tools_wrapper > * {
+  pointer-events: all;
 }

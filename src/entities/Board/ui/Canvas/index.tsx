@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import React from 'react';
 
-import { eventBus, Events, store, IShape } from '../model';
+import { eventBus, Events, store } from '../../model';
 import cls from './Canvas.module.scss';
 
 interface ICanvasState {
-  shapes: IShape[];
+  shapes: React.ReactElement[];
 }
 
 export class Canvas extends React.Component<unknown, ICanvasState> {
@@ -54,27 +54,22 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
 
   render() {
     const { shapes } = this.state;
-    const selectedTool = shapes[0]?.type;
 
     return (
-      <div className={cls.content_wrapper}>
-        <div className={cls.scroll_wrapper}>
-          <div className={cls.canvas_wrapper}>
-            <div
-              draggable
-              role="button"
-              tabIndex={0}
-              className={cls.canvas}
-              onKeyDown={this.mouseDown}
-              onClick={this.mouseDown}
-              onDragOver={this.handleDragOver}
-              onDragStart={this.handleDragStart}
-              onDrop={this.handleOnDrop}
-              onDragEnter={this.handleDragEnter}
-            >
-              {selectedTool}
-            </div>
-          </div>
+      <div className={cls.canvas_wrapper}>
+        <div
+          draggable
+          role="button"
+          tabIndex={0}
+          className={cls.canvas}
+          onKeyDown={this.mouseDown}
+          onClick={this.mouseDown}
+          onDragOver={this.handleDragOver}
+          onDragStart={this.handleDragStart}
+          onDrop={this.handleOnDrop}
+          onDragEnter={this.handleDragEnter}
+        >
+          {shapes}
         </div>
       </div>
     );

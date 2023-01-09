@@ -1,34 +1,34 @@
 import React from 'react';
 
 import { classNames } from 'shared/lib';
-import { eventBus, Events, toolStore, Tools, Tool } from 'entities/Canvas/model';
+import { eventBus, Events, toolStore, Tools, Tool } from 'entities/Board/model';
 
 import NoteIcon from './assets/note.svg';
 import TextIcon from './assets/text.svg';
 import TrashIcon from './assets/trash.svg';
 
-import cls from './BoardTools.module.scss';
+import cls from './Toolbar.module.scss';
 
 interface ITool {
-  id: number;
+  id: Tool;
   label: string;
   type: Tool;
   isSelected?: boolean;
 }
 
-interface IBoardToolsState {
+interface IToolbarState {
   tools: ITool[];
 }
 
-export class BoardTools extends React.Component<unknown, IBoardToolsState> {
+export class Toolbar extends React.Component<unknown, IToolbarState> {
   constructor(props: unknown) {
     super(props);
 
     this.state = {
       tools: [
-        { id: 1, label: 'Note', type: Tools.NOTE, isSelected: true },
-        { id: 2, label: 'Text', type: Tools.TEXT },
-        { id: 3, label: 'Delete', type: Tools.DELETE },
+        { id: Tools.NOTE, label: 'Note', type: Tools.NOTE, isSelected: true },
+        { id: Tools.TEXT, label: 'Text', type: Tools.TEXT },
+        { id: Tools.DELETE, label: 'Delete', type: Tools.DELETE },
       ],
     };
   }
@@ -47,13 +47,14 @@ export class BoardTools extends React.Component<unknown, IBoardToolsState> {
   }
 
   handleClick(type: Tool) {
+    console.log('🚀 ~ file: index.tsx:50 ~ Toolbar ~ handleClick ~ type', type);
     eventBus.emit(Events.CHANGE_TOOL, type);
     return this;
   }
 
   render() {
     return (
-      <ul className={cls.BoardTools} draggable="true">
+      <ul className={cls.Toolbar} draggable="true">
         <li className={cls.tools_list_item}>
           <span className={cls.tool}>
             <span
