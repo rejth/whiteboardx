@@ -1,16 +1,22 @@
 import React from 'react';
 
 import { classNames } from 'shared/lib';
+import { IShapePolymorphicComponentProps } from 'shared/model';
 import cls from './Selection.module.scss';
 
-interface ISelectionProps {
-  styles: React.CSSProperties;
-}
-
-export function Selection({ styles }: ISelectionProps) {
+export function Selection({ styles }: IShapePolymorphicComponentProps) {
   return (
-    <span className={cls.Selection} draggable="true" style={styles}>
-      <span className={classNames(cls.shape, {}, [''])} />
+    <span className={cls.Selection} style={styles}>
+      <span draggable="true" className={classNames(cls.corner_resize_drag, {}, [cls.top_left])} />
+      <span draggable="true" className={classNames(cls.corner_resize_drag, {}, [cls.top_right])} />
+      <span
+        draggable="true"
+        className={classNames(cls.corner_resize_drag, {}, [cls.bottom_left])}
+      />
+      <span
+        draggable="true"
+        className={classNames(cls.corner_resize_drag, {}, [cls.bottom_right])}
+      />
     </span>
   );
 }

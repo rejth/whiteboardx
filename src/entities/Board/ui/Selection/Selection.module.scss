@@ -1,3 +1,43 @@
 .Selection {
   position: absolute;
+  z-index: 40000006;
+
+  display: block;
+  border: 2px solid #35B2DC;
+  pointer-events: none;
+}
+
+.corner_resize_drag {
+  position: absolute;
+
+  display: block;
+  width: 10px;
+  height: 10px;
+  box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 16%);
+  background-color: white;
+  border: 1px solid #CCCCCC;
+
+  border-radius: 20%;
+  pointer-events: all;
+  cursor: nwse-resize;
+
+  &.top_left {
+    top: -7px;
+    left: -7px;
+  }
+
+  &.top_right {
+    top: -7px;
+    right: -7px;
+  }
+
+  &.bottom_left {
+    bottom: -7px;
+    left: -7px;
+  }
+
+  &.bottom_right {
+    right: -7px;
+    bottom: -7px;
+  }
 }

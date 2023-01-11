@@ -4,6 +4,7 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
 
+import { ShapePolymorphicComponent } from 'shared/model';
 import { ShapeTool, toolStore } from './ToolStore';
 import { eventBus, Event, Events } from './EventBus';
 
@@ -24,17 +25,21 @@ class Store {
 
   shapes: React.ReactElement[];
 
-  currentShape: React.ReactElement | null;
+  currentShape: ShapePolymorphicComponent;
+
+  shapeSelectionControl: ShapePolymorphicComponent;
 
   constructor() {
     this.storeKey = 'STORE';
     this.shapes = [];
     this.currentShape = null;
+    this.shapeSelectionControl = null;
 
     eventBus.on(Events.START, this.addShapeToCanvas.bind(this));
 
     toolStore.subscribe(() => {
       this.currentShape = toolStore.shape;
+      this.shapeSelectionControl = toolStore.shapeSelectionControl;
     });
   }
 
@@ -47,21 +52,31 @@ class Store {
   }
 
   addShapeToCanvas({ x, y }: IShape) {
-    if (!this.currentShape) return;
+    if (!this.currentShape || !this.shapeSelectionControl) return;
 
-    const styles: React.CSSProperties = {
+    const Shape = this.currentShape;
+    const ShapeSelectionControl = this.shapeSelectionControl;
+
+    const shapeStyles: React.CSSProperties = {
       position: 'absolute',
-      top: '0px',
-      left: '0px',
+      top: '0',
+      left: '0',
       height: '5em', // specify for each shape
       width: '5em', // specify for each shape
-      zIndex: '999852',
+      zIndex: '999750',
       transform: `translate(${x}em, ${y}em)`,
     };
 
-    const Shape = this.currentShape;
-    // @ts-ignore
-    this.shapes.push(<Shape key={uuid()} styles={styles} />);
+    const selectionStyles: React.CSSProperties = {
+      top: '-0.25rem',
+      left: '-0.25rem',
+      height: 'calc(5em + 0.5rem)', // specify for each shape
+      width: 'calc(5em + 0.5rem)', // specify for each shape,
+      transform: `translate(${x}em, ${y}em)`,
+    };
+
+    this.shapes.push(<Shape key={uuid()} styles={shapeStyles} />);
+    this.shapes.push(<ShapeSelectionControl key={uuid()} styles={selectionStyles} />);
     this.emitChanges();
   }
 }

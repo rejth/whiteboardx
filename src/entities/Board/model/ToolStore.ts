@@ -1,7 +1,10 @@
+import { ShapePolymorphicComponent } from 'shared/model';
+
 import { eventBus, Event, Events } from './EventBus';
 import { Note } from '../ui/Note';
 import { TextArea } from '../ui/TextArea';
 import { Text } from '../ui/Text';
+import { Selection } from '../ui/Selection';
 
 type ChangeToolHandler = (...args: unknown[]) => void;
 export type Tool = keyof typeof Tools;
@@ -16,7 +19,7 @@ export enum Tools {
   DELETE = 'DELETE',
 }
 
-const shapes: Record<Tool, React.ReactElement | any> = {
+const shapes: Record<Tool, ShapePolymorphicComponent> = {
   [Tools.NOTE]: Note,
   [Tools.AREA]: TextArea,
   [Tools.TEXT]: Text,
@@ -30,7 +33,9 @@ class ToolStore {
 
   tool: Tool;
 
-  shape: React.ReactElement | null;
+  shape: ShapePolymorphicComponent;
+
+  shapeSelectionControl: ShapePolymorphicComponent;
 
   constructor() {
     this.storeKey = 'TOOL_STORE';
@@ -38,6 +43,7 @@ class ToolStore {
 
     this.tool = Tools.NOTE;
     this.shape = null;
+    this.shapeSelectionControl = Selection;
   }
 
   subscribe(handler: ChangeToolHandler) {

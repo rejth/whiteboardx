@@ -1,11 +1,9 @@
 import React from 'react';
+
+import { IShapePolymorphicComponentProps } from 'shared/model';
 import cls from './Text.module.scss';
 
-interface ITextProps {
-  styles: React.CSSProperties;
-}
-
-export function Text({ styles }: ITextProps) {
+export function Text({ styles }: IShapePolymorphicComponentProps) {
   return (
     <span className={cls.Text} draggable="true" style={styles}>
       <span className={cls.text}>

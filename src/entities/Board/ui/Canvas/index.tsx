@@ -48,7 +48,7 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
 
   mouseDown(e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) {
     console.log('Mouse Down:', e);
-    eventBus.emit(Events.START, { x: 59.06, y: 10.87 });
+    eventBus.emit(Events.START, { x: 20.75, y: 10.82 });
     return this;
   }
 
