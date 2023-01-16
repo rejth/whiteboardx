@@ -56,6 +56,8 @@
         "peerDependencies": false
       }
     ],
+    "jsx-a11y/click-events-have-key-events": "off",
+    "class-methods-use-this": "off",
     "linebreak-style": ["error", "unix"],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",

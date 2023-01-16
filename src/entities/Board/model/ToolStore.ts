@@ -29,7 +29,7 @@ const shapes: Record<Tool, ShapePolymorphicComponent> = {
 };
 
 class ToolStore {
-  storeKey: Event;
+  readonly storeKey: Event;
 
   tool: Tool;
 

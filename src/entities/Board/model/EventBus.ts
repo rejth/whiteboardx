@@ -7,6 +7,7 @@ export enum Events {
   END = 'END',
   MOVE = 'MOVE',
   RESIZE = 'RESIZE',
+  ADD_SHAPE = 'ADD_SHAPE',
   UNDO = 'UNDO',
   REDO = 'REDO',
   CHANGE_TOOL = 'CHANGE_TOOL',
