@@ -1,1 +1,6 @@
-export type { IShapePolymorphicComponentProps, ShapePolymorphicComponent } from './types';
+export type {
+  IShapePolymorphicComponentProps,
+  ShapePolymorphicComponent,
+  Coordinates,
+  ChangeHandler,
+} from './types';

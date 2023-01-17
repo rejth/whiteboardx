@@ -1,14 +1,9 @@
-import { ShapePolymorphicComponent } from 'shared/model';
-
+import { ChangeHandler } from 'shared/model';
 import { eventBus, Event, Events } from './EventBus';
-import { Note } from '../ui/Note';
-import { TextArea } from '../ui/TextArea';
-import { Text } from '../ui/Text';
-import { Selection } from '../ui/Selection';
 
-type ChangeToolHandler = (...args: unknown[]) => void;
 export type Tool = keyof typeof Tools;
-export type ShapeTool = Exclude<Tool, 'SELECT' | 'PAN' | 'DELETE'>;
+export type ShapeTool = Exclude<Tool, 'PAN' | 'DELETE'>;
+export type Shape = Exclude<Tool, 'SELECT' | 'PAN' | 'DELETE'>;
 
 export enum Tools {
   NOTE = 'NOTE',
@@ -19,34 +14,22 @@ export enum Tools {
   DELETE = 'DELETE',
 }
 
-const shapes: Record<Tool, ShapePolymorphicComponent> = {
-  [Tools.NOTE]: Note,
-  [Tools.AREA]: TextArea,
-  [Tools.TEXT]: Text,
-  [Tools.SELECT]: null,
-  [Tools.PAN]: null,
-  [Tools.DELETE]: null,
-};
-
 class ToolStore {
   readonly storeKey: Event;
 
   tool: Tool;
 
-  shape: ShapePolymorphicComponent;
-
-  shapeSelectionControl: ShapePolymorphicComponent;
+  shapeType: Shape;
 
   constructor() {
     this.storeKey = 'TOOL_STORE';
     eventBus.on(Events.CHANGE_TOOL, this.changeTool.bind(this));
 
     this.tool = Tools.NOTE;
-    this.shape = null;
-    this.shapeSelectionControl = Selection;
+    this.shapeType = Tools.NOTE;
   }
 
-  subscribe(handler: ChangeToolHandler) {
+  subscribe(handler: ChangeHandler) {
     eventBus.on(this.storeKey, handler);
   }
 
@@ -56,7 +39,10 @@ class ToolStore {
 
   changeTool(tool: Tool) {
     this.tool = tool;
-    this.shape = shapes[tool];
+    if (!['SELECT', 'PAN', 'DELETE'].includes(tool)) {
+      this.shapeType = tool as Shape;
+    }
+
     this.emitChanges();
   }
 }

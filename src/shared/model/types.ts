@@ -5,3 +5,10 @@ export interface IShapePolymorphicComponentProps {
 }
 
 export type ShapePolymorphicComponent = React.ElementType<IShapePolymorphicComponentProps> | null;
+
+export type Coordinates = {
+  x: number;
+  y: number;
+};
+
+export type ChangeHandler = (...args: unknown[]) => void;

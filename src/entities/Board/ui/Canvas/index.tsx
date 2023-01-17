@@ -1,32 +1,16 @@
 /* eslint-disable no-console */
 import React, { RefObject } from 'react';
 
-import { eventBus, Events, store } from '../../model';
+import { defaultRect, DND_GHOST_HIDING_IMAGE } from 'shared/constants';
+import { Shape } from 'entities/Board/model/Shape';
+import { IShape } from 'entities/Board/model/ShapeFactory';
+import { eventBus, Events, store } from 'entities/Board/model';
 import cls from './Canvas.module.scss';
 
 interface ICanvasState {
-  shapes: React.ReactElement[];
+  shapes: IShape[];
   mousePosition: { x: number; y: number };
 }
-
-const defaultRect: DOMRect = {
-  height: 0,
-  width: 0,
-  x: 0,
-  y: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  top: 0,
-  toJSON() {
-    throw new Error('Function not implemented.');
-  },
-};
-
-export const DND_GHOST_HIDING_IMAGE = new Image();
-// https://png-pixel.com/
-DND_GHOST_HIDING_IMAGE.src =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
 
 export class Canvas extends React.Component<unknown, ICanvasState> {
   canvasRef: RefObject<HTMLDivElement> | null = null;
@@ -111,7 +95,9 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
           onDragOver={(e) => this.handleDragOver(e)}
           onDragEnd={(e) => this.handleOnDragEnd(e)}
         >
-          {shapes}
+          {shapes.map((shape) => (
+            <Shape key={shape.uuid} settings={shape} />
+          ))}
         </div>
       </div>
     );
