@@ -2,6 +2,7 @@
 import React, { RefObject } from 'react';
 
 import { defaultRect, DND_GHOST_HIDING_IMAGE } from 'shared/constants';
+import { Coordinates } from 'shared/model';
 import { Shape } from 'entities/Board/model/Shape';
 import { IShape } from 'entities/Board/model/ShapeFactory';
 import { eventBus, Events, store } from 'entities/Board/model';
@@ -9,7 +10,7 @@ import cls from './Canvas.module.scss';
 
 interface ICanvasState {
   shapes: IShape[];
-  mousePosition: { x: number; y: number };
+  mousePosition: Coordinates;
 }
 
 export class Canvas extends React.Component<unknown, ICanvasState> {

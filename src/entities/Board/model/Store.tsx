@@ -1,28 +1,16 @@
 // Store handles user events and manage app state.
 // It is responsible for business logic and subscribes on Event Bus in order to listen to all user events.
 // When user dispatches the event, Store handles it via Event Bus and runs a handler to update app state.
-import { ChangeHandler } from 'shared/model';
+import { ChangeHandler, Coordinates } from 'shared/model';
 import { Shape, Tools, toolStore } from './ToolStore';
 import { eventBus, Event, Events } from './EventBus';
 import { IShape, ShapeFactory } from './ShapeFactory';
 
 interface IMousePosition {
-  start: {
-    x: number;
-    y: number;
-  };
-  end: {
-    x: number;
-    y: number;
-  };
-  current: {
-    x: number;
-    y: number;
-  };
-  diff: {
-    x: number;
-    y: number;
-  };
+  start: Coordinates;
+  end: Coordinates;
+  current: Coordinates;
+  diff: Coordinates;
 }
 
 const defaultMousePosition: IMousePosition = {
@@ -77,16 +65,16 @@ class Store {
     eventBus.emit(this.storeKey);
   }
 
-  setStartMousePosition(start: { x: number; y: number }) {
+  setStartMousePosition(start: Coordinates) {
     this.mousePosition.start = start;
   }
 
-  setEndMousePosition(end: { x: number; y: number }) {
+  setEndMousePosition(end: Coordinates) {
     this.mousePosition.end = end;
     this.mousePosition.diff = this.getMousePositionsDiff('end');
   }
 
-  move({ x, y }: any) {
+  move({ x, y }: Coordinates) {
     this.mousePosition.current = { x, y };
     this.mousePosition.diff = this.getMousePositionsDiff('current');
     this.emitChanges();

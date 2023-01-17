@@ -2,11 +2,10 @@
 /* eslint-disable no-console */
 import React, { RefObject } from 'react';
 
-import { ShapePolymorphicComponent } from 'shared/model';
+import { Coordinates, ShapePolymorphicComponent } from 'shared/model';
 import { defaultRect } from 'shared/constants';
 
 import { ShapeTool, Tools } from './ToolStore';
-import { eventBus, Events } from './EventBus';
 import { IShape } from './ShapeFactory';
 
 import { Note } from '../ui/Note';
@@ -22,11 +21,11 @@ const shapes: Record<ShapeTool, ShapePolymorphicComponent> = {
 };
 
 interface IShapeState {
-  mousePosition: { x: number; y: number };
+  mousePosition: Coordinates;
 }
 
 interface IShapeProps {
-  settings: IShape | null;
+  settings: IShape;
 }
 
 export class Shape extends React.Component<IShapeProps, IShapeState> {
@@ -35,6 +34,8 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
   rect: DOMRect = defaultRect;
 
   isMousePressed = false;
+
+  startPoint: Coordinates = { x: 0, y: 0 };
 
   constructor(props: IShapeProps) {
     super(props);
@@ -47,30 +48,29 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
   }
 
   componentDidMount() {
-    this.setState({ mousePosition: { x: 0, y: 0 } });
+    const { settings } = this.props;
+    this.setState({ mousePosition: { x: settings.x, y: settings.y } });
     this.rect = this.shapeRef?.current?.getBoundingClientRect() || defaultRect;
   }
 
   onMouseDown(e: React.MouseEvent<HTMLSpanElement>) {
     this.isMousePressed = true;
-    const mousePosition = this.getMousePosition(e);
-    eventBus.emit(Events.START, mousePosition);
+    this.startPoint = this.getMousePosition(e);
   }
 
-  onMouseUp(e: React.MouseEvent<HTMLSpanElement>) {
+  onMouseUp() {
     this.isMousePressed = false;
-    const mousePosition = this.getMousePosition(e);
-    eventBus.emit(Events.END, mousePosition);
   }
 
   onMouseMove(e: React.MouseEvent<HTMLSpanElement>) {
     if (!this.isMousePressed) return;
-    const mousePosition = this.getMousePosition(e);
-    eventBus.emit(Events.END, mousePosition);
-  }
 
-  onResize(e: MouseEvent) {
-    console.log('onResize: ', e);
+    this.setState({
+      mousePosition: {
+        x: e.clientX - this.startPoint.x,
+        y: e.clientY - this.startPoint.y,
+      },
+    });
   }
 
   getMousePosition(e: React.MouseEvent<HTMLSpanElement>) {
@@ -82,14 +82,11 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
 
   render() {
     const { mousePosition } = this.state;
-    console.log('🚀 ~ mousePosition', mousePosition);
-
     const { settings } = this.props;
-    if (!settings) return null;
 
     const styles: React.CSSProperties = {
       ...settings.styles,
-      // transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+      transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
     };
 
     const RenderedShape = shapes[settings.type];
