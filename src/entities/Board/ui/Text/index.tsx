@@ -5,10 +5,10 @@ import cls from './Text.module.scss';
 
 export function Text({ styles }: IShapePolymorphicComponentProps) {
   return (
-    <span className={cls.Text} draggable="true" style={styles}>
+    <div className={cls.Text} draggable="true" style={styles}>
       <span className={cls.text}>
         <span>Text</span>
       </span>
-    </span>
+    </div>
   );
 }

@@ -1,9 +1,9 @@
 export interface IShapePolymorphicComponentProps {
   styles: React.CSSProperties;
-  onMouseDown?: (event: React.MouseEvent<HTMLSpanElement>) => void;
-  onMouseUp?: () => void;
-  onMouseMove?: (event: React.MouseEvent<HTMLSpanElement>) => void;
-  onResize?: (event: React.MouseEvent<HTMLSpanElement>) => void;
+  onDragStart?: (event: React.DragEvent<HTMLElement>) => void;
+  onDragEnd?: () => void;
+  onDragOver?: (event: React.DragEvent<HTMLElement>) => void;
+  onResize?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export type ShapePolymorphicComponent = React.ElementType<IShapePolymorphicComponentProps> | null;

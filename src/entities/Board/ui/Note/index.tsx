@@ -5,22 +5,21 @@ import { IShapePolymorphicComponentProps } from 'shared/model';
 import cls from './Note.module.scss';
 
 export function Note(props: IShapePolymorphicComponentProps) {
-  const { styles, onMouseDown, onMouseUp, onMouseMove } = props;
+  const { styles, onDragStart, onDragEnd, onDragOver } = props;
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-    <span
-      className={cls.Note}
+    <div
       draggable="true"
       style={styles}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseMove={onMouseMove}
+      className={cls.Note}
+      onDragStart={onDragStart}
+      onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
     >
       <span className={classNames(cls.shape, {}, ['square'])} />
       <span className={cls.text}>
         <span>Note</span>
       </span>
-    </span>
+    </div>
   );
 }

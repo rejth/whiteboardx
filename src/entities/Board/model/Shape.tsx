@@ -49,16 +49,17 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
     this.rect = this.shapeRef?.current?.getBoundingClientRect() || defaultRect;
   }
 
-  onMouseDown(e: React.MouseEvent<HTMLSpanElement>) {
+  handleDragStart(e: React.DragEvent<HTMLElement>) {
     this.isMousePressed = true;
-    this.startPoint = this.getMousePosition(e);
+    this.startPoint = { x: e.clientX, y: e.clientY };
   }
 
-  onMouseUp() {
+  handleDragEnd() {
     this.isMousePressed = false;
+    this.startPoint = { x: 0, y: 0 };
   }
 
-  onMouseMove(e: React.MouseEvent<HTMLSpanElement>) {
+  handleDragOver(e: React.DragEvent<HTMLElement>) {
     if (!this.isMousePressed) return;
     const { settings } = this.props;
 
@@ -66,13 +67,8 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
       x: e.clientX - this.startPoint.x,
       y: e.clientY - this.startPoint.y,
     });
-  }
 
-  getMousePosition(e: React.MouseEvent<HTMLSpanElement>) {
-    return {
-      x: e.clientX - this.rect.left,
-      y: e.clientY - this.rect.top,
-    };
+    this.startPoint = { x: e.clientX, y: e.clientY };
   }
 
   render() {
@@ -90,9 +86,9 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
       <ThisShape
         key={settings.uuid}
         styles={styles}
-        onMouseDown={(e) => this.onMouseDown(e)}
-        onMouseUp={() => this.onMouseUp()}
-        onMouseMove={(e) => this.onMouseMove(e)}
+        onDragStart={(e) => this.handleDragStart(e)}
+        onDragEnd={() => this.handleDragEnd()}
+        onDragOver={(e) => this.handleDragOver(e)}
       />
     );
   }
