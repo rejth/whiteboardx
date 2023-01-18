@@ -49,7 +49,8 @@ class Store {
 
     eventBus.on(Events.START, this.setStartMousePosition.bind(this));
     eventBus.on(Events.END, this.setEndMousePosition.bind(this));
-    eventBus.on(Events.MOVE, this.move.bind(this));
+    eventBus.on(Events.DRAG_CANVAS, this.dragCanvas.bind(this));
+    eventBus.on(Events.MOVE_SHAPE, this.moveShape.bind(this));
     eventBus.on(Events.ADD_SHAPE, this.addShapeToCanvas.bind(this));
 
     toolStore.subscribe(() => {
@@ -74,9 +75,17 @@ class Store {
     this.mousePosition.diff = this.getMousePositionsDiff('end');
   }
 
-  move({ x, y }: Coordinates) {
+  dragCanvas({ x, y }: Coordinates) {
     this.mousePosition.current = { x, y };
     this.mousePosition.diff = this.getMousePositionsDiff('current');
+    this.emitChanges();
+  }
+
+  moveShape(uuid: string, { x, y }: Coordinates) {
+    this.shapes = this.shapes.map((shape) => {
+      if (shape.uuid !== uuid) return shape;
+      return { ...shape, x, y };
+    });
     this.emitChanges();
   }
 

@@ -12,6 +12,7 @@ import { Note } from '../ui/Note';
 import { TextArea } from '../ui/TextArea';
 import { Text } from '../ui/Text';
 import { Selection } from '../ui/Selection';
+import { eventBus, Events } from './EventBus';
 
 const shapes: Record<ShapeTool, ShapePolymorphicComponent> = {
   [Tools.NOTE]: Note,
@@ -29,7 +30,7 @@ interface IShapeProps {
 }
 
 export class Shape extends React.Component<IShapeProps, IShapeState> {
-  shapeRef: RefObject<HTMLSpanElement> | null = null;
+  readonly shapeRef: RefObject<HTMLSpanElement> | null = null;
 
   rect: DOMRect = defaultRect;
 
@@ -42,14 +43,9 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
 
     this.shapeRef = React.createRef<HTMLSpanElement>();
     this.isMousePressed = false;
-    this.state = {
-      mousePosition: { x: 0, y: 0 },
-    };
   }
 
   componentDidMount() {
-    const { settings } = this.props;
-    this.setState({ mousePosition: { x: settings.x, y: settings.y } });
     this.rect = this.shapeRef?.current?.getBoundingClientRect() || defaultRect;
   }
 
@@ -64,12 +60,11 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
 
   onMouseMove(e: React.MouseEvent<HTMLSpanElement>) {
     if (!this.isMousePressed) return;
+    const { settings } = this.props;
 
-    this.setState({
-      mousePosition: {
-        x: e.clientX - this.startPoint.x,
-        y: e.clientY - this.startPoint.y,
-      },
+    eventBus.emit(Events.MOVE_SHAPE, settings.uuid, {
+      x: e.clientX - this.startPoint.x,
+      y: e.clientY - this.startPoint.y,
     });
   }
 
@@ -81,17 +76,24 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
   }
 
   render() {
-    const { mousePosition } = this.state;
     const { settings } = this.props;
 
     const styles: React.CSSProperties = {
       ...settings.styles,
-      transform: `translate(${mousePosition.x}px, ${mousePosition.y}px)`,
+      transform: `translate(${settings.x}px, ${settings.y}px)`,
     };
 
-    const RenderedShape = shapes[settings.type];
-    if (!RenderedShape) return null;
+    const ThisShape = shapes[settings.type];
+    if (!ThisShape) return null;
 
-    return <RenderedShape key={settings.uuid} styles={styles} />;
+    return (
+      <ThisShape
+        key={settings.uuid}
+        styles={styles}
+        onMouseDown={(e) => this.onMouseDown(e)}
+        onMouseUp={() => this.onMouseUp()}
+        onMouseMove={(e) => this.onMouseMove(e)}
+      />
+    );
   }
 }

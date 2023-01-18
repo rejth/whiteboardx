@@ -5,9 +5,10 @@ export type Event = keyof typeof Events;
 export enum Events {
   START = 'START',
   END = 'END',
-  MOVE = 'MOVE',
-  RESIZE = 'RESIZE',
+  DRAG_CANVAS = 'DRAG_CANVAS',
+  MOVE_SHAPE = 'MOVE_SHAPE',
   ADD_SHAPE = 'ADD_SHAPE',
+  RESIZE = 'RESIZE',
   UNDO = 'UNDO',
   REDO = 'REDO',
   CHANGE_TOOL = 'CHANGE_TOOL',

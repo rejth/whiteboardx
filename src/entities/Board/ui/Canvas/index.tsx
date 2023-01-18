@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { RefObject } from 'react';
 
 import { defaultRect, DND_GHOST_HIDING_IMAGE } from 'shared/constants';
@@ -14,7 +13,7 @@ interface ICanvasState {
 }
 
 export class Canvas extends React.Component<unknown, ICanvasState> {
-  canvasRef: RefObject<HTMLDivElement> | null = null;
+  readonly canvasRef: RefObject<HTMLDivElement> | null = null;
 
   rect: DOMRect = defaultRect;
 
@@ -24,11 +23,11 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
     super(props);
 
     this.canvasRef = React.createRef<HTMLDivElement>();
+    this.isMousePressed = false;
     this.state = {
       shapes: [],
       mousePosition: { x: 0, y: 0 },
     };
-    this.isMousePressed = false;
   }
 
   componentDidMount() {
@@ -48,7 +47,7 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
   handleDragOver(e: React.DragEvent<HTMLDivElement>) {
     if (!this.isMousePressed) return;
     const mousePosition = this.getMousePosition(e);
-    eventBus.emit(Events.MOVE, mousePosition);
+    eventBus.emit(Events.DRAG_CANVAS, mousePosition);
   }
 
   handleOnDragEnd(e: React.DragEvent<HTMLDivElement>) {
