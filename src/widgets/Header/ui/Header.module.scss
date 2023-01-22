@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   z-index: 400000010;
-  font-size: 0.8em;
+  font-size: 1em;
 
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -44,7 +44,6 @@
 }
 
 .icon {
-
   display: inline-flex;
   width: 1em;
   min-width: 1em;

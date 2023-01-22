@@ -3,12 +3,15 @@ import React, { RefObject } from 'react';
 import { defaultRect, DND_GHOST_HIDING_IMAGE } from 'shared/constants';
 import { Coordinates } from 'shared/model';
 import { Shape } from 'entities/Board/model/Shape';
-import { IShape } from 'entities/Board/model/ShapeFactory';
-import { eventBus, Events, store } from 'entities/Board/model';
+import { ISelection, IShape } from 'entities/Board/model/ShapeFactory';
+import { eventBus, Events, store, Tool, Tools, toolStore } from 'entities/Board/model';
 import cls from './Canvas.module.scss';
+import { Selection } from '../Selection';
 
 interface ICanvasState {
+  tool: Tool;
   shapes: IShape[];
+  selected: ISelection[];
   mousePosition: Coordinates;
 }
 
@@ -26,16 +29,37 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
     this.isMousePressed = false;
     this.state = {
       shapes: [],
+      selected: [],
+      tool: Tools.PAN,
       mousePosition: { x: 0, y: 0 },
     };
   }
 
   componentDidMount() {
-    this.setState({ shapes: store.shapes, mousePosition: store.mousePosition.diff });
+    const currentState = {
+      shapes: store.shapes,
+      selected: store.selectedShapes,
+      tool: store.tool,
+      mousePosition: store.mousePosition.diff,
+    };
+
+    this.setState(currentState);
     this.rect = this.canvasRef?.current?.getBoundingClientRect() || defaultRect;
 
     store.subscribe(() => {
-      this.setState({ shapes: store.shapes, mousePosition: store.mousePosition.diff });
+      this.setState((prevState) => ({
+        ...prevState,
+        shapes: store.shapes,
+        selected: store.selectedShapes,
+        mousePosition: store.mousePosition.diff,
+      }));
+    });
+
+    toolStore.subscribe(() => {
+      this.setState((prevState) => ({
+        ...prevState,
+        tool: store.tool,
+      }));
     });
   }
 
@@ -74,12 +98,24 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
   }
 
   addShape(e: React.MouseEvent<HTMLDivElement>) {
+    const { tool } = this.state;
+    if (tool === Tools.PAN) return;
+
     const mousePosition = this.getMousePosition(e);
     eventBus.emit(Events.ADD_SHAPE, mousePosition);
   }
 
   render() {
-    const { shapes, mousePosition } = this.state;
+    const { shapes, selected, mousePosition } = this.state;
+    const shapeList = shapes.map((shape) => <Shape key={shape.uuid} settings={shape} />);
+
+    const selectedList = selected.map((selection) => {
+      const styles: React.CSSProperties = {
+        ...selection.styles,
+        transform: `translate(${selection.x}px, ${selection.y}px)`,
+      };
+      return <Selection key={selection.uuid} styles={styles} />;
+    });
 
     return (
       <div className={cls.canvas_wrapper}>
@@ -95,9 +131,8 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
           onDragOver={(e) => this.handleDragOver(e)}
           onDragEnd={(e) => this.handleOnDragEnd(e)}
         >
-          {shapes.map((shape) => (
-            <Shape key={shape.uuid} settings={shape} />
-          ))}
+          {shapeList}
+          {selectedList}
         </div>
       </div>
     );

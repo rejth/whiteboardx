@@ -1,7 +1,7 @@
 export interface IShapePolymorphicComponentProps {
   styles: React.CSSProperties;
   onDragStart?: (event: React.DragEvent<HTMLElement>) => void;
-  onDragEnd?: () => void;
+  onDragEnd?: (event: React.DragEvent<HTMLElement>) => void;
   onDragOver?: (event: React.DragEvent<HTMLElement>) => void;
   onResize?: (event: React.MouseEvent<HTMLElement>) => void;
 }

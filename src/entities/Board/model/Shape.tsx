@@ -1,20 +1,18 @@
-/* eslint-disable react/no-unused-class-component-methods */
-/* eslint-disable no-console */
 import React, { RefObject } from 'react';
 
 import { Coordinates, ShapePolymorphicComponent } from 'shared/model';
 import { defaultRect } from 'shared/constants';
 
-import { ShapeTool, Tools } from './ToolStore';
-import { IShape } from './ShapeFactory';
+import { SelectableShape, Tools } from './ToolStore';
+import { ISelection, IShape } from './ShapeFactory';
+import { eventBus, Events } from './EventBus';
 
 import { Note } from '../ui/Note';
 import { TextArea } from '../ui/TextArea';
 import { Text } from '../ui/Text';
 import { Selection } from '../ui/Selection';
-import { eventBus, Events } from './EventBus';
 
-const shapes: Record<ShapeTool, ShapePolymorphicComponent> = {
+const shapes: Record<SelectableShape, ShapePolymorphicComponent> = {
   [Tools.NOTE]: Note,
   [Tools.AREA]: TextArea,
   [Tools.TEXT]: Text,
@@ -26,22 +24,20 @@ interface IShapeState {
 }
 
 interface IShapeProps {
-  settings: IShape;
+  settings: IShape | ISelection;
 }
 
 export class Shape extends React.Component<IShapeProps, IShapeState> {
-  readonly shapeRef: RefObject<HTMLSpanElement> | null = null;
+  readonly shapeRef: RefObject<HTMLDivElement> | null = null;
 
   rect: DOMRect = defaultRect;
 
   isMousePressed = false;
 
-  startPoint: Coordinates = { x: 0, y: 0 };
-
   constructor(props: IShapeProps) {
     super(props);
 
-    this.shapeRef = React.createRef<HTMLSpanElement>();
+    this.shapeRef = React.createRef<HTMLDivElement>();
     this.isMousePressed = false;
   }
 
@@ -49,14 +45,16 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
     this.rect = this.shapeRef?.current?.getBoundingClientRect() || defaultRect;
   }
 
-  handleDragStart(e: React.DragEvent<HTMLElement>) {
+  handleResize() {
+    return this.rect;
+  }
+
+  handleDragStart() {
     this.isMousePressed = true;
-    this.startPoint = { x: e.clientX, y: e.clientY };
   }
 
   handleDragEnd() {
     this.isMousePressed = false;
-    this.startPoint = { x: 0, y: 0 };
   }
 
   handleDragOver(e: React.DragEvent<HTMLElement>) {
@@ -64,11 +62,9 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
     const { settings } = this.props;
 
     eventBus.emit(Events.MOVE_SHAPE, settings.uuid, {
-      x: e.clientX - this.startPoint.x,
-      y: e.clientY - this.startPoint.y,
+      x: e.clientX,
+      y: e.clientY,
     });
-
-    this.startPoint = { x: e.clientX, y: e.clientY };
   }
 
   render() {
@@ -86,9 +82,10 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
       <ThisShape
         key={settings.uuid}
         styles={styles}
-        onDragStart={(e) => this.handleDragStart(e)}
+        onDragStart={() => this.handleDragStart()}
+        onDragOver={(e: React.DragEvent<HTMLElement>) => this.handleDragOver(e)}
         onDragEnd={() => this.handleDragEnd()}
-        onDragOver={(e) => this.handleDragOver(e)}
+        onResize={() => this.handleResize()}
       />
     );
   }

@@ -4,7 +4,9 @@ import { classNames } from 'shared/lib';
 import { IShapePolymorphicComponentProps } from 'shared/model';
 import cls from './TextArea.module.scss';
 
-export function TextArea({ styles }: IShapePolymorphicComponentProps) {
+export function TextArea(props: IShapePolymorphicComponentProps) {
+  const { styles } = props;
+
   return (
     <div className={cls.TextArea} draggable="true" style={styles}>
       <span className={classNames(cls.shape, {}, ['rect'])} />

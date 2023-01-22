@@ -7,7 +7,13 @@ import cls from './BoardPage.module.scss';
 
 export function BoardPage() {
   return (
-    <main className={cls.BoardPage}>
+    <div
+      role="button"
+      tabIndex={0}
+      className={cls.BoardPage}
+      onKeyDown={() => {}}
+      onMouseDown={() => {}}
+    >
       <Header />
       <div className={cls.content_wrapper}>
         <div className={cls.scroll_wrapper}>
@@ -17,6 +23,6 @@ export function BoardPage() {
           <Toolbar />
         </div>
       </div>
-    </main>
+    </div>
   );
 }

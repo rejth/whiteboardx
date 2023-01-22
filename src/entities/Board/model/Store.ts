@@ -1,10 +1,12 @@
 // Store handles user events and manage app state.
 // It is responsible for business logic and subscribes on Event Bus in order to listen to all user events.
 // When user dispatches the event, Store handles it via Event Bus and runs a handler to update app state.
+import { v4 as uuid } from 'uuid';
+
 import { ChangeHandler, Coordinates } from 'shared/model';
-import { Shape, Tools, toolStore } from './ToolStore';
+import { ShapeType, Tool, Tools, toolStore } from './ToolStore';
 import { eventBus, Event, Events } from './EventBus';
-import { IShape, ShapeFactory } from './ShapeFactory';
+import { ISelection, IShape, ShapeFactory } from './ShapeFactory';
 
 interface IMousePosition {
   start: Coordinates;
@@ -37,15 +39,21 @@ class Store {
 
   shapes: IShape[];
 
-  shapeType: Shape;
+  selectedShapes: ISelection[];
+
+  shapeType: ShapeType;
+
+  tool: Tool;
 
   mousePosition: IMousePosition;
 
   constructor() {
     this.storeKey = 'STORE';
     this.shapes = [];
+    this.selectedShapes = [];
     this.mousePosition = defaultMousePosition;
     this.shapeType = Tools.NOTE;
+    this.tool = Tools.PAN;
 
     eventBus.on(Events.START, this.setStartMousePosition.bind(this));
     eventBus.on(Events.END, this.setEndMousePosition.bind(this));
@@ -54,6 +62,7 @@ class Store {
     eventBus.on(Events.ADD_SHAPE, this.addShapeToCanvas.bind(this));
 
     toolStore.subscribe(() => {
+      this.tool = toolStore.tool;
       this.shapeType = toolStore.shapeType;
     });
   }
@@ -81,11 +90,17 @@ class Store {
     this.emitChanges();
   }
 
-  moveShape(uuid: string, { x, y }: Coordinates) {
+  moveShape(id: string, { x, y }: Coordinates) {
     this.shapes = this.shapes.map((shape) => {
-      if (shape.uuid !== uuid) return shape;
+      if (shape.uuid !== id) return shape;
       return { ...shape, x, y };
     });
+
+    this.selectedShapes = this.selectedShapes.map((selection) => {
+      if (selection.parentShapeUuid !== id) return selection;
+      return { ...selection, x, y };
+    });
+
     this.emitChanges();
   }
 
@@ -96,12 +111,20 @@ class Store {
     };
   }
 
+  clearSelection() {
+    this.selectedShapes = [];
+    this.emitChanges();
+  }
+
   addShapeToCanvas({ x, y }: IShape) {
-    const shape = ShapeFactory.createShape(this.shapeType, { x, y });
-    const selectionControl = ShapeFactory.createSelectionControl(this.shapeType, { x, y });
+    const shapeId = uuid();
+    const shape = ShapeFactory.createShape(shapeId, this.shapeType, { x, y });
+    const selection = ShapeFactory.createSelection(shapeId, this.shapeType, { x, y });
 
     this.shapes.push(shape);
-    this.shapes.push(selectionControl);
+    this.selectedShapes.push(selection);
+
+    eventBus.emit(Events.CHANGE_TOOL, Tools.PAN);
     this.emitChanges();
   }
 }

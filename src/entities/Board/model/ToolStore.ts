@@ -2,8 +2,8 @@ import { ChangeHandler } from 'shared/model';
 import { eventBus, Event, Events } from './EventBus';
 
 export type Tool = keyof typeof Tools;
-export type ShapeTool = Exclude<Tool, 'PAN' | 'DELETE'>;
-export type Shape = Exclude<Tool, 'SELECT' | 'PAN' | 'DELETE'>;
+export type ShapeType = Exclude<Tool, 'SELECT' | 'PAN' | 'DELETE'>;
+export type SelectableShape = Exclude<Tool, 'PAN' | 'DELETE'>;
 
 export enum Tools {
   NOTE = 'NOTE',
@@ -19,13 +19,13 @@ class ToolStore {
 
   tool: Tool;
 
-  shapeType: Shape;
+  shapeType: ShapeType;
 
   constructor() {
     this.storeKey = 'TOOL_STORE';
     eventBus.on(Events.CHANGE_TOOL, this.changeTool.bind(this));
 
-    this.tool = Tools.NOTE;
+    this.tool = Tools.PAN;
     this.shapeType = Tools.NOTE;
   }
 
@@ -40,7 +40,7 @@ class ToolStore {
   changeTool(tool: Tool) {
     this.tool = tool;
     if (!['SELECT', 'PAN', 'DELETE'].includes(tool)) {
-      this.shapeType = tool as Shape;
+      this.shapeType = tool as ShapeType;
     }
 
     this.emitChanges();
