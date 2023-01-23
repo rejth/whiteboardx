@@ -1,4 +1,4 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 
 import { Coordinates, ShapePolymorphicComponent } from 'shared/model';
 import { defaultRect } from 'shared/constants';
@@ -12,7 +12,7 @@ import { TextArea } from '../ui/TextArea';
 import { Text } from '../ui/Text';
 import { Selection } from '../ui/Selection';
 
-const shapes: Record<SelectableShape, ShapePolymorphicComponent> = {
+const shapes: Record<SelectableShape, ShapePolymorphicComponent | any> = {
   [Tools.NOTE]: Note,
   [Tools.AREA]: TextArea,
   [Tools.TEXT]: Text,
@@ -25,10 +25,15 @@ interface IShapeState {
 
 interface IShapeProps {
   settings: IShape | ISelection;
+  forwardedRef: React.Ref<HTMLDivElement>;
 }
 
-export class Shape extends React.Component<IShapeProps, IShapeState> {
-  readonly shapeRef: RefObject<HTMLDivElement> | null = null;
+interface IShapeForwardedRefProps {
+  settings: IShape | ISelection;
+}
+
+class Shape extends React.Component<IShapeProps, IShapeState> {
+  private readonly shapeRef: React.RefObject<HTMLDivElement>;
 
   rect: DOMRect = defaultRect;
 
@@ -67,8 +72,10 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
     });
   }
 
+  // ADD useImperativeHandler to get coordinates and uuid
+
   render() {
-    const { settings } = this.props;
+    const { forwardedRef, settings } = this.props;
 
     const styles: React.CSSProperties = {
       ...settings.styles,
@@ -81,6 +88,9 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
     return (
       <ThisShape
         key={settings.uuid}
+        ref={this.shapeRef}
+        forwardedRef={forwardedRef}
+        settings={settings}
         styles={styles}
         onDragStart={() => this.handleDragStart()}
         onDragOver={(e: React.DragEvent<HTMLElement>) => this.handleDragOver(e)}
@@ -90,3 +100,11 @@ export class Shape extends React.Component<IShapeProps, IShapeState> {
     );
   }
 }
+
+export const ShapeForwardingRef = React.forwardRef(
+  (props: IShapeForwardedRefProps, ref: React.Ref<HTMLDivElement>) => (
+    <Shape {...props} forwardedRef={ref} />
+  ),
+);
+
+ShapeForwardingRef.displayName = 'ShapeForwardingRef';

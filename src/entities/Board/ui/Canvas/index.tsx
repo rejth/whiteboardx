@@ -1,8 +1,11 @@
-import React, { RefObject } from 'react';
+import React from 'react';
 
 import { defaultRect, DND_GHOST_HIDING_IMAGE } from 'shared/constants';
 import { Coordinates } from 'shared/model';
-import { Shape } from 'entities/Board/model/Shape';
+import {
+  IPolymorphicShapeForwardedRef,
+  PolymorphicShape,
+} from 'entities/Board/model/PolymorphicShape';
 import { ISelection, IShape } from 'entities/Board/model/ShapeFactory';
 import { eventBus, Events, store, Tool, Tools, toolStore } from 'entities/Board/model';
 import cls from './Canvas.module.scss';
@@ -16,7 +19,11 @@ interface ICanvasState {
 }
 
 export class Canvas extends React.Component<unknown, ICanvasState> {
-  readonly canvasRef: RefObject<HTMLDivElement> | null = null;
+  canvasRef: React.RefObject<HTMLDivElement>;
+
+  shapeRef: React.RefObject<IPolymorphicShapeForwardedRef>;
+
+  handleClickByShape: (event: MouseEvent) => void;
 
   rect: DOMRect = defaultRect;
 
@@ -26,6 +33,9 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
     super(props);
 
     this.canvasRef = React.createRef<HTMLDivElement>();
+    this.shapeRef = React.createRef<IPolymorphicShapeForwardedRef>();
+    this.handleClickByShape = (e: MouseEvent) => this.shapeRef.current?.handleClickByShape(e);
+
     this.isMousePressed = false;
     this.state = {
       shapes: [],
@@ -44,6 +54,7 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
     };
 
     this.setState(currentState);
+    window.addEventListener('mousedown', this.handleClickByShape.bind(this));
     this.rect = this.canvasRef?.current?.getBoundingClientRect() || defaultRect;
 
     store.subscribe(() => {
@@ -61,6 +72,10 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
         tool: store.tool,
       }));
     });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousedown', this.handleClickByShape.bind(this));
   }
 
   handleDragStart(e: React.DragEvent<HTMLDivElement>) {
@@ -107,7 +122,9 @@ export class Canvas extends React.Component<unknown, ICanvasState> {
 
   render() {
     const { shapes, selected, mousePosition } = this.state;
-    const shapeList = shapes.map((shape) => <Shape key={shape.uuid} settings={shape} />);
+    const shapeList = shapes.map((shape) => (
+      <PolymorphicShape key={shape.uuid} ref={this.shapeRef} settings={shape} />
+    ));
 
     const selectedList = selected.map((selection) => {
       const styles: React.CSSProperties = {

@@ -60,6 +60,8 @@ class Store {
     eventBus.on(Events.DRAG_CANVAS, this.dragCanvas.bind(this));
     eventBus.on(Events.MOVE_SHAPE, this.moveShape.bind(this));
     eventBus.on(Events.ADD_SHAPE, this.addShapeToCanvas.bind(this));
+    eventBus.on(Events.SELECT_SHAPE, this.selectShape.bind(this));
+    eventBus.on(Events.CLEAR_SELECTION, this.clearSelection.bind(this));
 
     toolStore.subscribe(() => {
       this.tool = toolStore.tool;
@@ -109,6 +111,12 @@ class Store {
       x: this.mousePosition[point].x - this.mousePosition.start.x,
       y: this.mousePosition[point].y - this.mousePosition.start.y,
     };
+  }
+
+  selectShape(id: string, { x, y }: Coordinates) {
+    const selection = ShapeFactory.createSelection(id, this.shapeType, { x, y });
+    this.selectedShapes.push(selection);
+    this.emitChanges();
   }
 
   clearSelection() {
